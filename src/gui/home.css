@@ -1,0 +1,59 @@
+
+.root {
+    -fx-background-image: url('chatbot.gif');
+    -fx-background-size:stretch;
+}
+.white-form{
+    -fx-background-color: #fff;
+    -fx-background-radius: 8px;
+}
+
+.border{
+    -fx-border-color: linear-gradient(to bottom right,#1fa0a0, #316666);
+    -fx-border-width: 5px;
+    -fx-border-radius: 8px;
+}
+
+.btn{
+    -fx-background-color: linear-gradient(to bottom right,#1fa0a0, #316666);
+    -fx-text-fill: #fff;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.btn:hover{
+    -fx-background-color: linear-gradient(to bottom right,#15cdcd, #043c3c);
+}
+
+.table-view{
+    -fx-padding : 0px;
+    -fx-background-color:transparent;
+    -fx-border-color: linear-gradient(to bottom right,#1fa0a0, #316666);
+    -fx-border-radius: 8px;
+    -fx-border-width: 6px;
+}
+
+.table-view .column-header{
+    -fx-alignment: CENTER;
+}
+
+.table-view .column-header-background{
+    -fx-background-color: linear-gradient(to bottom right,#1fa0a0, #316666);
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-background-inset: 0 0 0 0;
+}
+
+.table-view .column-header, .filter{
+    -fx-background-color: transparent;
+    -fx-size: 50px;
+}
+.table-view .column-header:hover{
+    -fx-background-color: linear-gradient(to bottom right,#15cdcd, #043c3c);
+}
+
+.ss{
+    -fx-background-color: #c4c9c7;
+}
+
+
+

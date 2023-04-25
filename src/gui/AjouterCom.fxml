@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="346.0" stylesheets="@crudDesign.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.AjouterCommentaireController">
+   <children>
+      <TextField fx:id="desc" layoutX="71.0" layoutY="101.0" prefHeight="198.0" prefWidth="203.0" promptText="Commentaire" />
+      <Button layoutX="140.0" layoutY="321.0" mnemonicParsing="false" onAction="#AjouterCom" stylesheets="@crudDesign.css" text="Ajouter">
+         <styleClass>
+            <String fx:value="btn" />
+            <String fx:value="white-form" />
+         </styleClass></Button>
+      <Button layoutX="261.0" layoutY="21.0" mnemonicParsing="false" onAction="#AfficherCom" stylesheets="@crudDesign.css" text="Afficher">
+         <styleClass>
+            <String fx:value="btn" />
+            <String fx:value="white-form" />
+         </styleClass></Button>
+      <Label layoutX="94.0" layoutY="59.0" text="Votre Commentaire" textFill="#01a1a6">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
