@@ -14,6 +14,7 @@
     <VBox fx:id="rvContainer" layoutX="50.0" layoutY="50.0" maxHeight="-Infinity" prefHeight="237.0" prefWidth="230.0" style="-fx-padding: 10;" styleClass="shadow">
 
         <ImageView fx:id="imageA" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" style="-fx-margin: 10;" />
+      <Label fx:id="nbrLikeLabel" text="J'aime" />
 
         <Label fx:id="titreArt" style="-fx-font-size: 9pt;" text="Titre">
             <font>
@@ -21,7 +22,7 @@
             </font></Label>
         <Label fx:id="contenuArt" style="-fx-font-size: 9pt;" text="Contenu" />
         <Label fx:id="sujetArt" style="-fx-font-size: 9pt;" text="Sujet" />
-        <Button layoutX="244.0" layoutY="174.0" mnemonicParsing="false" stylesheets="@crudDesign.css" text="J'aime">
+        <Button layoutX="244.0" layoutY="174.0" mnemonicParsing="false" onAction="#love" stylesheets="@crudDesign.css" text="J'aime">
             <styleClass>
                 <String fx:value="white-form" />
                 <String fx:value="btn" />

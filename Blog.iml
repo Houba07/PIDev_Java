@@ -18,5 +18,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" name="itextpdf.tool.xmlworker" level="project" />
   </component>
 </module>

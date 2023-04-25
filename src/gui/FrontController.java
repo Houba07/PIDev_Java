@@ -1,5 +1,10 @@
 package gui;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import entities.Article;
 import entities.Categorie;
 import entities.Forum;
@@ -13,6 +18,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
@@ -20,17 +27,25 @@ import javafx.stage.Stage;
 import services.ArticleService;
 import services.CategorieService;
 import services.ForumService;
+import utils.MyDB;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class FrontController implements Initializable {
 
@@ -38,15 +53,12 @@ public class FrontController implements Initializable {
     private FlowPane flowF;
 
     @FXML
-    private ScrollPane scrollF;
-
-    @FXML
     private FlowPane flowA;
+    @FXML
+    private TextField searchField;
 
     @FXML
-    private ScrollPane scrollA;
-
-    private boolean isLiked;
+    private TextField searchFieldArt;
 
     @FXML
     private ComboBox<Categorie> categorie = new ComboBox<>();
@@ -67,14 +79,6 @@ public class FrontController implements Initializable {
     @FXML
     private TextField imageF;
 
-    @FXML
-    private Button modifierF;
-
-    @FXML
-    private Button parcourir;
-
-    @FXML
-    private Button supprimerF;
 
 
     @FXML
@@ -151,6 +155,15 @@ public class FrontController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+
+
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            updateView(newValue);
+        });
+        searchFieldArt.textProperty().addListener((observable, oldValue, newValue) -> {
+            updateViewArt(newValue);
+        });
 
         ObservableList<String> typeOptions = FXCollections.observableArrayList("Anonyme", "Publique");
         visibilite.setItems(typeOptions);
@@ -238,17 +251,264 @@ public class FrontController implements Initializable {
         window.show();
     }
 
-    /*@FXML
-    void Commenter(ActionEvent event) {
-        try {
-            Parent loader = FXMLLoader.load(getClass().getResource("AjouterCom.fxml"));
-            statutsVBox.getScene().setRoot(loader);
+    private void updateView(String searchQuery) {
+        if (flowF != null) {
+            try {
+                List<Forum> listF = null;
+                listF = fs.recuperer();
+                flowF.getChildren().clear(); // clear the current products
 
-        }catch (IOException ex){
-            System.out.println("Erreur"+ex.getMessage());
+                // filter the list of products based on the search query
+                List<Forum> filteredF = listF.stream()
+                        .filter(p -> p.getTitre_forum().toLowerCase().contains(searchQuery.toLowerCase()))
+                        .collect(Collectors.toList());
+
+                for (Forum forum1 : filteredF) {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/FItem.fxml"));
+                    Parent parent = fxmlLoader.load();
+                    FItemController fitemController = fxmlLoader.getController();
+                    fitemController.setForum(forum1);
+                    Region region = (Region) parent;
+                    Node node = region.getChildrenUnmodifiable().get(0);
+                    flowF.getChildren().add(node);
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            System.out.println("productsFlowPane is null");
+        }
+    }
+
+    @FXML
+    private void updateViewByTitre() {
+        if (flowF != null) {
+            try {
+                List<Forum> listProd = fs.getByTitre();
+                flowF.getChildren().clear();
+
+                for (Forum forum1 : listProd) {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/FItem.fxml"));
+                    Parent parent = fxmlLoader.load();
+                    FItemController fitemController = fxmlLoader.getController();
+                    fitemController.setForum(forum1);
+                    Region region = (Region) parent;
+                    Node node = region.getChildrenUnmodifiable().get(0);
+                    flowF.getChildren().add(node);
+                }
+            } catch (IOException | SQLException ex) {
+                ex.printStackTrace();
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            System.out.println("rvFlowPane is null");
+        }
+    }
+
+    private void updateViewArt(String searchQuery) {
+        if (flowA != null) {
+            try {
+                List<Article> listA = null;
+                listA = as.recuperer();
+                flowA.getChildren().clear(); // clear the current products
+
+                // filter the list of products based on the search query
+                List<Article> filteredA = listA.stream()
+                        .filter(p -> p.getTitre_art().toLowerCase().contains(searchQuery.toLowerCase()))
+                        .collect(Collectors.toList());
+
+                for (Article article : filteredA) {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/AItem.fxml"));
+                    Parent parent = fxmlLoader.load();
+                    AItemController aitemController = fxmlLoader.getController();
+                    aitemController.setArticle(article);
+                    Region region = (Region) parent;
+                    Node node = region.getChildrenUnmodifiable().get(0);
+                    flowA.getChildren().add(node);
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            System.out.println("productsFlowPane is null");
+        }
+    }
+
+    @FXML
+    private void updateViewByNbrLike() {
+        if (flowA != null) {
+            try {
+                List<Article > like = as.getByNbrLike();
+                flowA.getChildren().clear();
+
+                for (Article article : like) {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/AItem.fxml"));
+                    Parent parent = fxmlLoader.load();
+                    AItemController aitemController = fxmlLoader.getController();
+                    aitemController.setArticle(article);
+                    Region region = (Region) parent;
+                    Node node = region.getChildrenUnmodifiable().get(0);
+                    flowA.getChildren().add(node);
+                }
+            } catch (IOException | SQLException ex) {
+                ex.printStackTrace();
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            System.out.println("productsFlowPane is null");
+        }
+    }
+
+    @FXML
+    private void updateViewByTitreArt() {
+        if (flowA != null) {
+            try {
+                List<Article > articles = as.getByTitreArt();
+                flowA.getChildren().clear();
+
+                for (Article article : articles) {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/AItem.fxml"));
+                    Parent parent = fxmlLoader.load();
+                    AItemController aitemController = fxmlLoader.getController();
+                    aitemController.setArticle(article);
+                    Region region = (Region) parent;
+                    Node node = region.getChildrenUnmodifiable().get(0);
+                    flowA.getChildren().add(node);
+                }
+            } catch (IOException | SQLException ex) {
+                ex.printStackTrace();
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            System.out.println("productsFlowPane is null");
+        }
+    }
+
+    @FXML
+    private void imprimer(ActionEvent event)throws SQLException, DocumentException, IOException {
+        java.sql.Connection cnx = MyDB.getInstance().getCnx();
+        String requete1 = "SELECT id ,categorie_id,titre_forum,description,img_forum,visibilite FROM  forum";
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+
+        try {
+            PdfWriter.getInstance(document,new FileOutputStream("C:\\Users\\ryhab\\OneDrive\\Bureau\\Forum.pdf"));
+            document.open();
+
+//       Image img = Image.getInstance("C:\\Users\\21655\\Downloads\\badelBd\\projet de amine 2\\projet de amine 2\\projet de amine\\projet de amine\\PidevJava\\src\\gui\\dronify.png");
+//       img.scaleAbsoluteHeight(60);
+//       img.scaleAbsoluteWidth(100);
+//       img.setAlignment(Image.ALIGN_LEFT);
+//       document.open();
+//       document.add(img);
+
+            //document.add(new Paragraph("Liste des paiements"));
+            Font font = new Font(Font.FontFamily.TIMES_ROMAN, 28, Font.UNDERLINE, BaseColor.BLACK);
+            Paragraph p = new Paragraph("Liste des Forums ", font);
+            p.setAlignment(Element.ALIGN_CENTER);
+            document.add(p);
+            document.add(new Paragraph(" "));
+            document.add(new Paragraph(" "));
+
+
+            PdfPTable tabpdf = new PdfPTable(9);
+            tabpdf.setWidthPercentage(100);
+
+            PdfPCell cell;
+            cell = new PdfPCell(new Phrase("ID Forum", FontFactory.getFont("Times New Roman", 11)));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setBackgroundColor(BaseColor.WHITE);
+            tabpdf.addCell(cell);
+
+            cell = new PdfPCell(new Phrase("Categorie", FontFactory.getFont("Times New Roman", 11)));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setBackgroundColor(BaseColor.WHITE);
+            tabpdf.addCell(cell);
+
+            cell = new PdfPCell(new Phrase("Titre", FontFactory.getFont("Times New Roman", 11)));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setBackgroundColor(BaseColor.WHITE);
+            tabpdf.addCell(cell);
+
+            cell = new PdfPCell(new Phrase("Description", FontFactory.getFont("Times New Roman", 11)));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setBackgroundColor(BaseColor.WHITE);
+            tabpdf.addCell(cell);
+
+            cell = new PdfPCell(new Phrase("Image", FontFactory.getFont("Times New Roman", 11)));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setBackgroundColor(BaseColor.WHITE);
+            tabpdf.addCell(cell);
+
+
+            cell = new PdfPCell(new Phrase("Visibilite", FontFactory.getFont("Times New Roman", 11)));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setBackgroundColor(BaseColor.WHITE);
+            tabpdf.addCell(cell);
+
+
+
+
+
+            PreparedStatement pst = cnx.prepareStatement(requete1);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                cell = new PdfPCell(new Phrase(rs.getString("id"), FontFactory.getFont("Times New Roman", 11)));
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(BaseColor.WHITE);
+                tabpdf.addCell(cell);
+
+                cell = new PdfPCell(new Phrase(rs.getString("categorie_id"), FontFactory.getFont("Times New Roman", 11)));
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(BaseColor.WHITE);
+                tabpdf.addCell(cell);
+
+                cell = new PdfPCell(new Phrase(rs.getString("titre_forum"), FontFactory.getFont("Times New Roman", 11)));
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(BaseColor.WHITE);
+                tabpdf.addCell(cell);
+
+                cell = new PdfPCell(new Phrase(rs.getString("description"), FontFactory.getFont("Times New Roman", 11)));
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(BaseColor.WHITE);
+                tabpdf.addCell(cell);
+
+                cell = new PdfPCell(new Phrase(rs.getString("img_forum"), FontFactory.getFont("Times New Roman", 11)));
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(BaseColor.WHITE);
+                tabpdf.addCell(cell);
+
+                cell = new PdfPCell(new Phrase(rs.getString("visibilite"), FontFactory.getFont("Times New Roman", 11)));
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(BaseColor.WHITE);
+                tabpdf.addCell(cell);
+
+
+
+            }
+            document.add(tabpdf);
+            JOptionPane.showMessageDialog(null, "Success !");
+            document.close();
+            Desktop.getDesktop().open(new File("C:\\Users\\ryhab\\OneDrive\\Bureau\\Forum.pdf"));
+//          notif("Succes","Votre document a été enregistré au format PDF !");
         }
 
-    }*/
+        catch (SQLException | DocumentException | IOException e) {
+            System.out.println("ERROR PDF");
+            System.out.println(Arrays.toString(e.getStackTrace()));
+            System.out.println(e.getMessage());
+        }
+    }
 
 
 }

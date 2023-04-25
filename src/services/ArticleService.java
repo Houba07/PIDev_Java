@@ -5,6 +5,8 @@ import entities.Article;
 import java.sql.*;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import entities.Sujet;
 import utils.MyDB;
@@ -86,7 +88,7 @@ public class ArticleService implements IArticle <Article>{
         List<Article> arts= new ArrayList<>();
         SujetService ss = new SujetService();
 
-            String sql = "SELECT article.id, article.sujet_id , article.titre_art, article.contenue,article.img_art, sujet.nom_sujet AS nom_sujet FROM article LEFT JOIN sujet ON article.sujet_id = sujet.id";
+            String sql = "SELECT article.id, article.sujet_id , article.titre_art, article.contenue,article.img_art, article.nbr_like,sujet.nom_sujet AS nom_sujet FROM article LEFT JOIN sujet ON article.sujet_id = sujet.id";
             Statement ste = cnx.createStatement();
             ResultSet rs = ste.executeQuery(sql);
 
@@ -98,6 +100,7 @@ public class ArticleService implements IArticle <Article>{
                 a.setTitre_art(rs.getString("titre_art"));
                 a.setContenue(rs.getString("contenue"));
                 a.setImg_art(rs.getString("img_art"));
+                a.setNbr_like(rs.getInt("nbr_like"));
                 arts.add(a);
             }
 
@@ -113,7 +116,7 @@ public class ArticleService implements IArticle <Article>{
     public void DisLike(Article art) throws SQLException {
 
         PreparedStatement statement;
-        statement = cnx.prepareStatement("UPDATE article SET nbr_like = nbr_like-1  WHERE id_s=" + art.getId());
+        statement = cnx.prepareStatement("UPDATE article SET nbr_like = nbr_like-1  WHERE id=" + art.getId());
         statement.executeUpdate();
 
 
@@ -123,5 +126,16 @@ public class ArticleService implements IArticle <Article>{
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public List<Article> getByNbrLike() throws SQLException, ParseException {
+        List<Article> arts = recuperer();
+        Collections.sort(arts, Comparator.comparing(Article::getNbr_like));
+        return arts;
+    }
+    public List<Article> getByTitreArt() throws SQLException, ParseException {
+        List<Article> articles = recuperer();
+        Collections.sort(articles, Comparator.comparing(Article::getTitre_art));
+        return articles;
     }
 }

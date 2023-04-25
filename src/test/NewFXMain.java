@@ -18,7 +18,7 @@ public class NewFXMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../gui/Front.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../gui/Home.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
             primaryStage.setTitle("Gestion des Blogs");

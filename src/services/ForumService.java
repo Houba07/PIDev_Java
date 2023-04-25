@@ -8,6 +8,8 @@ import utils.MyDB;
 import java.sql.*;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ForumService implements IForum <Forum>{
@@ -99,6 +101,12 @@ public class ForumService implements IForum <Forum>{
             forums.add(f);
         }
 
+        return forums;
+    }
+
+    public List<Forum> getByTitre() throws SQLException, ParseException {
+        List<Forum> forums = recuperer();
+        Collections.sort(forums, Comparator.comparing(Forum::getTitre_forum));
         return forums;
     }
 

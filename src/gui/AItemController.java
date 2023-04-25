@@ -7,8 +7,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import services.ArticleService;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -16,6 +18,9 @@ public class AItemController implements Initializable {
 
     @FXML
     private Label sujetArt;
+    @FXML
+    private Label nbrLikeLabel;
+    private boolean isLiked;
     private Article article;
 
     @FXML
@@ -26,6 +31,7 @@ public class AItemController implements Initializable {
 
     @FXML
     private Label titreArt;
+    private ArticleService as = new ArticleService();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -55,9 +61,7 @@ public class AItemController implements Initializable {
             var10000.setText("Titre :  " + this.article.getTitre_art());
             this.contenuArt.setText("Contenu :  " +this.article.getContenue());
             this.sujetArt.setText(String.valueOf("Sujet :  " + this.article.getSujet_id()));
-
-
-
+            this.nbrLikeLabel.setText(String.valueOf("J'aime :  " + this.article.getNbr_like()));
 
 
 
@@ -66,6 +70,23 @@ public class AItemController implements Initializable {
             titreArt.setText("");
             contenuArt.setText("");
             sujetArt.setText("");
+            nbrLikeLabel.setText("");
+        }
+    }
+
+    public void love(){
+        try {
+            if (!isLiked) {
+                isLiked = true;
+                as.Like(article);
+                nbrLikeLabel.setText((article.getNbr_like() + 1) + " personnes aiment ça");
+            } else {
+                isLiked = false;
+                as.DisLike(article);
+                nbrLikeLabel.setText((article.getNbr_like()) + " personnes aiment ça");
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erreur" + ex.getMessage());
         }
     }
 }
