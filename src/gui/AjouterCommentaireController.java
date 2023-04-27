@@ -17,7 +17,7 @@ import services.CommentaireService;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.text.ParseException;
+import static api.BadWords.checkWords;
 import java.util.ResourceBundle;
 
 public class AjouterCommentaireController implements Initializable {
@@ -37,6 +37,13 @@ public class AjouterCommentaireController implements Initializable {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Erreur de publier votre commentaire ! ");
                 alert.setHeaderText("Veuillez remplir tous les champs de votre commentaire !");
+                alert.showAndWait();
+                return;
+            }
+            if (checkWords(com.getCmt()).equals("true")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ATTENTION ! ");
+                alert.setHeaderText("Votre commentaire contient des gros mots et ne peut pas être ajouté.");
                 alert.showAndWait();
                 return;
             }

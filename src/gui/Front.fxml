@@ -114,7 +114,11 @@
                                                 <FlowPane fx:id="flowF" prefHeight="502.0" prefWidth="524.0" />
                                              </content>
                                           </ScrollPane>
-                                          <Button layoutX="319.0" layoutY="21.0" mnemonicParsing="false" onAction="#imprimer" text="PDF" />
+                                          <Button layoutX="287.0" layoutY="18.0" mnemonicParsing="false" onAction="#imprimer" prefHeight="30.0" prefWidth="56.0" stylesheets="@crudDesign.css" text="PDF">
+                                             <styleClass>
+                                                <String fx:value="btn" />
+                                                <String fx:value="white-form" />
+                                             </styleClass></Button>
                                        </children>
                                        <styleClass>
                                           <String fx:value="white-form" />

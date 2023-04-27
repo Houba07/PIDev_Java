@@ -1,6 +1,7 @@
 package entities;
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class Commentaire {
     private int id;
@@ -66,5 +67,18 @@ public class Commentaire {
 
     public void setDate_com(Date date_com) {
         this.date_com = date_com;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Commentaire)) return false;
+        Commentaire that = (Commentaire) o;
+        return id == that.id && Objects.equals(cmt, that.cmt) && Objects.equals(forum, that.forum);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, cmt, forum);
     }
 }

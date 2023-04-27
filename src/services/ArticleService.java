@@ -138,4 +138,6 @@ public class ArticleService implements IArticle <Article>{
         Collections.sort(articles, Comparator.comparing(Article::getTitre_art));
         return articles;
     }
+
+
 }

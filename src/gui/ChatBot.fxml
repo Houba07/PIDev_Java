@@ -10,29 +10,29 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ChatBotController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ChatBotController">
    <children>
-      <TextField fx:id="inputTextField" layoutX="88.0" layoutY="87.0" onAction="#processInput" prefHeight="42.0" prefWidth="200.0" stylesheets="@crudDesign.css">
+      <TextField fx:id="inputTextField" layoutX="169.0" layoutY="104.0" onAction="#processInput" prefHeight="42.0" prefWidth="200.0" stylesheets="@crudDesign.css">
          <styleClass>
             <String fx:value="border" />
             <String fx:value="white-form" />
          </styleClass></TextField>
-      <TextArea fx:id="outputLabel" layoutX="34.0" layoutY="161.0" prefHeight="200.0" prefWidth="330.0" stylesheets="@crudDesign.css">
+      <TextArea fx:id="outputLabel" layoutX="57.0" layoutY="174.0" prefHeight="352.0" prefWidth="424.0" stylesheets="@crudDesign.css">
          <styleClass>
             <String fx:value="border" />
             <String fx:value="white-form" />
          </styleClass></TextArea>
-      <ImageView fitHeight="242.0" fitWidth="216.0" layoutX="354.0" layoutY="74.0">
+      <ImageView fitHeight="374.0" fitWidth="338.0" layoutX="524.0" layoutY="112.0">
          <image>
             <Image url="@../images/chatbot.png" />
          </image>
       </ImageView>
-      <Label layoutX="44.0" layoutY="34.0" prefHeight="26.0" prefWidth="313.0" text="Posez votre question votre question !" textFill="#00b9aa">
+      <Label layoutX="112.0" layoutY="35.0" prefHeight="26.0" prefWidth="313.0" text="Posez votre question votre question !" textFill="#00b9aa">
          <font>
             <Font name="Arial Narrow Bold" size="21.0" />
          </font>
       </Label>
-      <Button layoutX="525.0" layoutY="359.0" mnemonicParsing="false" onAction="#Accueil" stylesheets="@crudDesign.css" text="Accueil">
+      <Button layoutX="823.0" layoutY="552.0" mnemonicParsing="false" onAction="#Accueil" stylesheets="@crudDesign.css" text="Accueil">
          <styleClass>
             <String fx:value="border" />
             <String fx:value="white-form" />

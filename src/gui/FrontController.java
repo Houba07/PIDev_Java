@@ -421,7 +421,7 @@ public class FrontController implements Initializable {
             document.add(new Paragraph(" "));
 
 
-            PdfPTable tabpdf = new PdfPTable(9);
+            PdfPTable tabpdf = new PdfPTable(6);
             tabpdf.setWidthPercentage(100);
 
             PdfPCell cell;

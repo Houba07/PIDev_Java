@@ -100,16 +100,16 @@
                                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                              </columnResizePolicy>
                                           </TableView>
-                                          <Button layoutX="282.0" layoutY="14.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="173.0" stylesheets="@crudDesign.css" text="Rechercher">
-                                             <styleClass>
-                                                <String fx:value="btn" />
-                                                <String fx:value="white-form" />
-                                             </styleClass></Button>
-                                          <TextField fx:id="filterfield1" layoutX="90.0" layoutY="15.0" prefHeight="37.0" prefWidth="173.0" />
                                           <Button layoutX="496.0" layoutY="-7.0" mnemonicParsing="false" onAction="#AfficherFront" stylesheets="@crudDesign.css" text="Front">
                                              <styleClass>
                                                 <String fx:value="white-form" />
                                                 <String fx:value="border" />
+                                             </styleClass>
+                                          </Button>
+                                          <Button layoutX="212.0" layoutY="11.0" mnemonicParsing="false" onAction="#Stat" prefHeight="30.0" prefWidth="124.0" stylesheets="@crudDesign.css" text="Statistiques">
+                                             <styleClass>
+                                                <String fx:value="white-form" />
+                                                <String fx:value="btn" />
                                              </styleClass>
                                           </Button>
                                        </children>
@@ -230,12 +230,6 @@
                                              </columnResizePolicy>
                                           </TableView>
                                           <Button layoutX="498.0" layoutY="-3.0" mnemonicParsing="false" onAction="#AfficherFront" stylesheets="@crudDesign.css" text="Front">
-                                             <styleClass>
-                                                <String fx:value="white-form" />
-                                                <String fx:value="border" />
-                                             </styleClass>
-                                          </Button>
-                                          <Button layoutX="433.0" layoutY="-3.0" mnemonicParsing="false" onAction="#Stat" stylesheets="@crudDesign.css" text="Stats">
                                              <styleClass>
                                                 <String fx:value="white-form" />
                                                 <String fx:value="border" />

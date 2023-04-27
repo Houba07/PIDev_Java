@@ -98,4 +98,21 @@ public class SujetService implements ISujet <Sujet>{
 
     }
 
+    public  ResultSet nbr(){
+        try {
+            String req = "SELECT sujet.nom_sujet, COUNT(article.nbr_like) as totallike FROM sujet JOIN article ON sujet.id = article.sujet_id GROUP BY sujet.nom_sujet ";
+            Statement st = cnx.createStatement();
+
+            ResultSet RS = st.executeQuery(req);
+            return RS ;
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+
+        return null;
+
+    }
+
 }

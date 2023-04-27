@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -30,7 +31,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
 import java.util.ResourceBundle;
-
+import java.util.stream.Collectors;
 
 
 public class BackController implements Initializable {
@@ -551,6 +552,7 @@ public class BackController implements Initializable {
         window.setScene(AjouterScene);
         window.show();
     }
+
 
 
 
